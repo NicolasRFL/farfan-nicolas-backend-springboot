@@ -11,6 +11,7 @@ services:
       - "3306:3306"
     volumes:
       - mysql-data:/var/lib/mysql
+
   phpmyadmin:
     image: phpmyadmin/phpmyadmin
     container_name: phpmyadmin
@@ -19,6 +20,18 @@ services:
       PMA_PORT: 3306
     ports:
       - "8081:80"
+
+  api:
+    build: .
+    container_name: backend-spring
+    ports:
+      - "8080:8080"
+    depends_on:
+      - mysql
+    environment:
+      SPRING_DATASOURCE_URL: jdbc:mysql://mysql:3306/talento?useSSL=false&serverTimezone=UTC&allowPublicKeyRetrieval=true
+      SPRING_DATASOURCE_USERNAME: usuario
+      SPRING_DATASOURCE_PASSWORD: clave123
 
 volumes:
   mysql-data:
